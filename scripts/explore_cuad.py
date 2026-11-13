@@ -60,13 +60,33 @@ class Contract(TypedDict):
 # Drill 1 — Load the file into a flat, typed shape
 # ---------------------------------------------------------------------------
 def load_contracts(path: str) -> list[Contract]:
-    """Return one Contract per entry in data["data"].
 
-    text = the paragraph's "context"; qas = the paragraph's "qas".
-    HINT: CUAD has one paragraph per contract, but write it so it would still
-    work (by concatenating) if there were several. Why? Real legal data is messy.
-    """
-    raise NotImplementedError
+        with open(path,encoding="utf-8") as f:
+            raw=json.load(f)
+
+        contracts:list[Contract]=[]
+
+        for entry in raw["data"]:
+            paragraphs=entry["paragraphs"]
+            text="\n".join(p["context"] for p in paragraphs)
+            qas=[qa for p in paragraphs for qa in p["qas"]]
+            contracts.append({"title":entry["title"],"text":text,"qas":qas})
+           
+        return contracts
+        
+
+
+
+    # contracts: list[Contract] = []
+    # for entry in raw["data"]:
+    #     title = entry["title"]
+    #     paragraphs = entry["paragraphs"]
+    #     text = "\n".join(p["context"] for p in paragraphs)
+    #     qas = [qa for p in paragraphs for qa in p["qas"]]
+    #     contracts.append({"title": title, "text": text, "qas": qas})
+
+    # return contracts
+
 
 
 # ---------------------------------------------------------------------------
@@ -79,7 +99,9 @@ def category_of(qa: QA) -> str:
     contains the category in double quotes. Use the id first, the question as a
     fallback (regex). Strip whitespace.
     """
-    raise NotImplementedError
+
+    
+
 
 
 # ---------------------------------------------------------------------------
