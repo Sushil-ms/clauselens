@@ -100,6 +100,24 @@ def category_of(qa: QA) -> str:
     fallback (regex). Strip whitespace.
     """
 
+    qa_id=qa["id"]
+    if "__" in qa_id:
+        return qa_id.split("__")[-1]
+
+    return qa["question"].split('"')[1]
+
+
+
+
+
+
+    return qa["id"].split("__")[-1].strip()
+
+
+
+
+
+
     
 
 
